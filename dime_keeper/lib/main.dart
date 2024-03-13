@@ -1,6 +1,7 @@
 import "package:expence_master/models/expence.dart";
-import "package:expence_master/pages/expencers.dart";
+//import "package:expence_master/pages/expencers.dart";
 import "package:expence_master/server/categary_adapter.dart";
+import "package:expence_master/widgets/bottom_navigation_bar.dart";
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
 import "package:hive_flutter/adapters.dart";
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Expencers(),
+      home: BottomNavigationBarApp(),
     );
   }
 }
