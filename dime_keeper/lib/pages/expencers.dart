@@ -1,5 +1,6 @@
 import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
+import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
 import 'package:expence_master/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
@@ -158,33 +159,59 @@ class _ExpencersState extends State<Expencers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("DIME KEEPER"),
-        backgroundColor: const Color.fromARGB(255, 0, 179, 255),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DateWidget(),
+          ],
+        ),
+        backgroundColor: const Color.fromARGB(255, 163, 237, 249),
         elevation: 3,
-        actions: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Colors.white,
-            ),
-            child: IconButton(
-              onPressed: _openAddExpencesOverlay,
-              icon: const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ],
       ),
-      body: Column(
-        children: [
-          PieChart(dataMap: dataMap),
-          ExpenceList(
-            expenceList: db.expenceList,
-            onDeleteExpence: onDeleteExpence,
-          ),
-        ],
+      body: Container(
+        color: const Color.fromARGB(255, 170, 241, 250),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            PieChart(dataMap: dataMap),
+            ExpenceList(
+              expenceList: db.expenceList,
+              onDeleteExpence: onDeleteExpence,
+            ),
+            Stack(children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: const Color.fromARGB(255, 83, 157, 241),
+                          ),
+                          child: IconButton(
+                            onPressed: _openAddExpencesOverlay,
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.black,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ],
+        ),
       ),
     );
   }
