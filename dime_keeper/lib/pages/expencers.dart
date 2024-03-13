@@ -1,5 +1,6 @@
 import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
+import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
 import 'package:expence_master/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
@@ -158,8 +159,13 @@ class _ExpencersState extends State<Expencers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("DIME KEEPER"),
-        backgroundColor: const Color.fromARGB(255, 0, 179, 255),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DateWidget(),
+          ],
+        ),
+        backgroundColor: const Color.fromARGB(255, 163, 237, 249),
         elevation: 3,
       ),
       body: Container(
