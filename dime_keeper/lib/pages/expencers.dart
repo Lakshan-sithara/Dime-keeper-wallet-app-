@@ -173,7 +173,13 @@ class _ExpencersState extends State<Expencers> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PieChart(dataMap: dataMap),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: PieChart(dataMap: dataMap),
+            ),
             ExpenceList(
               expenceList: db.expenceList,
               onDeleteExpence: onDeleteExpence,
