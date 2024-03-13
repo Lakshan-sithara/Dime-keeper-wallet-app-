@@ -2,7 +2,7 @@ import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
-import 'package:expence_master/widgets/expence_list.dart';
+//import 'package:expence_master/widgets/expence_list.dart';
 import 'package:expence_master/widgets/last_recode_overviwe.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -11,37 +11,22 @@ import 'package:pie_chart/pie_chart.dart';
 class Expencers extends StatefulWidget {
   const Expencers({super.key});
 
+  //get onDeleteExpence => null;
+
   @override
   State<Expencers> createState() => _ExpencersState();
+
+  
 }
 
 class _ExpencersState extends State<Expencers> {
   final _myBox = Hive.box('expenceDatabase');
   Database db = Database();
 
-  //expence list
-  // final List<ExpenceModel> _expenceList = [
-  //   ExpenceModel(
-  //       amount: 12.4,
-  //       title: "footBall",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.leasure),
-  //   ExpenceModel(
-  //       amount: 25,
-  //       title: "bus",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.travel),
-  //   ExpenceModel(
-  //       amount: 30,
-  //       title: "carrot",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.food),
-  //   ExpenceModel(
-  //       amount: 20,
-  //       title: 'bag',
-  //       date: DateTime.now(),
-  //       categary: Chatagary.travel),
-  // ];
+  // void onDeleteExpence(ExpenceModel expence) {
+  //   print('Deleting expence: $expence');
+  // }
+
   //PIE chart
   Map<String, double> dataMap = {
     "Food": 0,
@@ -159,6 +144,7 @@ class _ExpencersState extends State<Expencers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //###############App Bar###############
       appBar: AppBar(
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -174,6 +160,7 @@ class _ExpencersState extends State<Expencers> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            //############## Pie chart########
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -184,6 +171,7 @@ class _ExpencersState extends State<Expencers> {
             const SizedBox(
               height: 10,
             ),
+            //################ Over viwe card ##########
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -191,10 +179,12 @@ class _ExpencersState extends State<Expencers> {
               ),
               child: OverViweCard(),
             ),
-            ExpenceList(
-              expenceList: db.expenceList,
-              onDeleteExpence: onDeleteExpence,
-            ),
+            // ExpenceList(
+            //   expenceList: db.expenceList,
+            //   onDeleteExpence: onDeleteExpence,
+            // ),
+
+            //############# add icon ######################
             Stack(children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,

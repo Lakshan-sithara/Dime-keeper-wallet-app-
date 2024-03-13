@@ -1,3 +1,4 @@
+import 'package:expence_master/pages/budget.dart';
 import 'package:expence_master/pages/expencers.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarWidget> {
         page = Expencers();
         break;
       case 1:
-        page = Placeholder();
+        page = Budget();
         break;
       case 2:
         page = Placeholder();
