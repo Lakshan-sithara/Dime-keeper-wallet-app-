@@ -3,6 +3,7 @@ import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
 import 'package:expence_master/widgets/expence_list.dart';
+import 'package:expence_master/widgets/last_recode_overviwe.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -179,6 +180,16 @@ class _ExpencersState extends State<Expencers> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: PieChart(dataMap: dataMap),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              child: OverViweCard(),
             ),
             ExpenceList(
               expenceList: db.expenceList,
