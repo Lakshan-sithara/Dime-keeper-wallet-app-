@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class OverViweCard extends StatelessWidget {
-  const OverViweCard({super.key});
+  const OverViweCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       child: Column(
         children: [
           const Row(
