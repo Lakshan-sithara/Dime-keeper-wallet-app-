@@ -174,6 +174,7 @@ class _ExpencersState extends State<Expencers> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            //###### Pie Chart ######
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -184,6 +185,7 @@ class _ExpencersState extends State<Expencers> {
             const SizedBox(
               height: 10,
             ),
+            //###### Last Recode Overviwe ######
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -191,42 +193,32 @@ class _ExpencersState extends State<Expencers> {
               ),
               child: OverViweCard(),
             ),
-            ExpenceList(
-              expenceList: db.expenceList,
-              onDeleteExpence: onDeleteExpence,
-            ),
-            Stack(children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Positioned(
-                        bottom: 8,
-                        right: 8,
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: const Color.fromARGB(255, 83, 157, 241),
-                          ),
-                          child: IconButton(
-                            onPressed: _openAddExpencesOverlay,
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 40,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+            //###### Expence List ######
+            // ExpenceList(
+            //   expenceList: db.expenceList,
+            //   onDeleteExpence: onDeleteExpence,
+            // ),
+            //###### Add new expence button ######
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: EdgeInsets.all(8),
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: const Color.fromARGB(255, 83, 157, 241),
+                ),
+                child: IconButton(
+                  onPressed: _openAddExpencesOverlay,
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: 40,
                   ),
-                ],
+                ),
               ),
-            ]),
+            ),
           ],
         ),
       ),
