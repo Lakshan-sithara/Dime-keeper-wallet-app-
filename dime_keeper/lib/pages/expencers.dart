@@ -135,53 +135,54 @@ class _ExpencersState extends State<Expencers> {
         backgroundColor: const Color.fromARGB(255, 163, 237, 249),
         elevation: 3,
       ),
-      body: Container(
-        color: const Color.fromARGB(255, 170, 241, 250),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: PieChart(dataMap: dataMap),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              child: OverViweCard(
-                  dataMap: dataMap), // Use OverViweCard with dataMap
-            ),
-            // ExpenceList(
-            //   expenceList: db.expenceList,
-            //   onDeleteExpence: onDeleteExpence,
-            // ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(8),
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: const Color.fromARGB(255, 83, 157, 241),
-                ),
-                child: IconButton(
-                  onPressed: _openAddExpencesOverlay,
-                  icon: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 40,
+      body: Stack(
+        children: [
+          Container(
+            color: const Color.fromARGB(255, 170, 241, 250),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  child: PieChart(dataMap: dataMap),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: OverViweCard(
+                      dataMap: dataMap), // Use OverViweCard with dataMap
+                ),
+                // ExpenceList(
+                //   expenceList: db.expenceList,
+                //   onDeleteExpence: onDeleteExpence,
+                // ),
+              ],
+            ),
+          ),
+          //###### Add Button ######
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: FloatingActionButton(
+                onPressed: _openAddExpencesOverlay,
+                backgroundColor: Colors.blue,
+                elevation: 5,
+                child: const Icon(
+                  Icons.add,
+                  size: 32,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
