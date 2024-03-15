@@ -1,15 +1,15 @@
+import 'package:expence_master/widgets/last_recode_overviwe.dart';
+import 'package:flutter/material.dart';
 import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
-import 'package:expence_master/widgets/expence_list.dart';
-import 'package:expence_master/widgets/last_recode_overviwe.dart';
-import 'package:flutter/material.dart';
+//import 'package:expence_master/widgets/overviwe_card.dart'; // Assuming your OverViweCard widget is in overviwe_card.dart
 import 'package:hive/hive.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class Expencers extends StatefulWidget {
-  const Expencers({super.key});
+  const Expencers({Key? key}) : super(key: key);
 
   @override
   State<Expencers> createState() => _ExpencersState();
@@ -19,30 +19,6 @@ class _ExpencersState extends State<Expencers> {
   final _myBox = Hive.box('expenceDatabase');
   Database db = Database();
 
-  //expence list
-  // final List<ExpenceModel> _expenceList = [
-  //   ExpenceModel(
-  //       amount: 12.4,
-  //       title: "footBall",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.leasure),
-  //   ExpenceModel(
-  //       amount: 25,
-  //       title: "bus",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.travel),
-  //   ExpenceModel(
-  //       amount: 30,
-  //       title: "carrot",
-  //       date: DateTime.now(),
-  //       categary: Chatagary.food),
-  //   ExpenceModel(
-  //       amount: 20,
-  //       title: 'bag',
-  //       date: DateTime.now(),
-  //       categary: Chatagary.travel),
-  // ];
-  //PIE chart
   Map<String, double> dataMap = {
     "Food": 0,
     "Travel": 0,
@@ -50,7 +26,6 @@ class _ExpencersState extends State<Expencers> {
     "Work": 0,
   };
 
-  //add new expence
   void onAddNewExpence(ExpenceModel expence) {
     setState(() {
       db.expenceList.add(expence);
@@ -59,12 +34,8 @@ class _ExpencersState extends State<Expencers> {
     db.updateData();
   }
 
-  //remove a expence
   void onDeleteExpence(ExpenceModel expence) {
-    //store the deleting expence
     ExpenceModel deletingExpence = expence;
-
-    //get the index of removing expence
     final int removingIndex = db.expenceList.indexOf(expence);
     setState(() {
       db.expenceList.remove(expence);
@@ -72,7 +43,6 @@ class _ExpencersState extends State<Expencers> {
       calCatagaryValue();
     });
 
-    //show snackbar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text("Delete Successful!"),
@@ -89,7 +59,6 @@ class _ExpencersState extends State<Expencers> {
     );
   }
 
-  //PIE chart calculation
   double foodVal = 0;
   double travelVal = 0;
   double leasureVal = 0;
@@ -122,7 +91,6 @@ class _ExpencersState extends State<Expencers> {
       workVal = workValTotal;
     });
 
-    //update the data map
     dataMap = {
       "Food": foodVal,
       "Travel": travelVal,
@@ -134,7 +102,6 @@ class _ExpencersState extends State<Expencers> {
   @override
   void initState() {
     super.initState();
-    //if this is the first time create the initial data
     if (_myBox.get('EXP_DATA') == null) {
       db.createInitialDatabase();
       calCatagaryValue();
@@ -144,16 +111,15 @@ class _ExpencersState extends State<Expencers> {
     }
   }
 
-//Function to open a model overlay
-
   void _openAddExpencesOverlay() {
     showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return AddNewExpence(
-            onAddExpence: onAddNewExpence,
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AddNewExpence(
+          onAddExpence: onAddNewExpence,
+        );
+      },
+    );
   }
 
   @override
@@ -174,7 +140,6 @@ class _ExpencersState extends State<Expencers> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            //###### Pie Chart ######
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -182,23 +147,19 @@ class _ExpencersState extends State<Expencers> {
               ),
               child: PieChart(dataMap: dataMap),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            //###### Last Recode Overviwe ######
+            const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
               ),
-              child: OverViweCard(),
+              child: OverViweCard(
+                  dataMap: dataMap), // Use OverViweCard with dataMap
             ),
-            //###### Expence List ######
             // ExpenceList(
             //   expenceList: db.expenceList,
             //   onDeleteExpence: onDeleteExpence,
             // ),
-            //###### Add new expence button ######
             Align(
               alignment: Alignment.bottomRight,
               child: Container(

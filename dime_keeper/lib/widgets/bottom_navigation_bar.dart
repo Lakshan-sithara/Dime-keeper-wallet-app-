@@ -40,6 +40,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarWidget> {
     }
 
     return Scaffold(
+      
       body: page,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color.fromARGB(255, 27, 86, 145),
