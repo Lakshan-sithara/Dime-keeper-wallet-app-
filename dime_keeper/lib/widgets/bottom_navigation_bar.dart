@@ -1,4 +1,5 @@
 import 'package:expence_master/pages/expencers.dart';
+import 'package:expence_master/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarApp extends StatelessWidget {
@@ -30,7 +31,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarWidget> {
         page = Expencers();
         break;
       case 1:
-        page = Placeholder();
+        page = TopAppBar();
         break;
       case 2:
         page = Placeholder();
