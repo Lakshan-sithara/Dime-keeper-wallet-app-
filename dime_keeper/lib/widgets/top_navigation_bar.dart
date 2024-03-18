@@ -1,7 +1,13 @@
+import 'package:expence_master/models/expence.dart';
+import 'package:expence_master/pages/expencers.dart';
+import 'package:expence_master/server/database.dart';
+import 'package:expence_master/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
 
 class TopAppBar extends StatefulWidget {
-  const TopAppBar({super.key});
+  final Database db;
+  final Function(ExpenceModel) onDeleteExpence;
+  const TopAppBar({super.key,required this.db,required this.onDeleteExpence});
 
   @override
   State<TopAppBar> createState() => _TopAppBarState();
@@ -15,7 +21,10 @@ class _TopAppBarState extends State<TopAppBar> {
     Widget page;
     switch (currentIndex) {
       case 0:
-        page = Placeholder();
+        page = ExpenceList(
+          expenceList: widget.db.expenceList,
+          onDeleteExpence: widget.onDeleteExpence,
+        );
         break;
       case 1:
         page = Placeholder();
@@ -38,7 +47,7 @@ class _TopAppBarState extends State<TopAppBar> {
             ],
           ),
         ),
-        body: TabBarView(children: [Placeholder(), Placeholder()]),
+        body: TabBarView(children: [page, Placeholder()]),
       ),
     );
   }
