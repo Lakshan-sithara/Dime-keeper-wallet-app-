@@ -5,9 +5,9 @@ import 'package:expence_master/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationBarApp extends StatefulWidget {
-  final Database db;
-  final Function(ExpenceModel) onDeleteExpence;
-  const BottomNavigationBarApp({Key? key,required this.db,required this.onDeleteExpence}) : super(key: key);
+  // final Database db;
+  // final Function(ExpenceModel) onDeleteExpence;
+  const BottomNavigationBarApp({Key? key}) : super(key: key);
 
   @override
   State<BottomNavigationBarApp> createState() => _BottomNavigationBarAppState();
@@ -40,10 +40,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarWidget> {
         page = Expencers();
         break;
       case 1:
-        page = TopAppBar(
-          db: db,
-          onDeleteExpence: onDeleteExpence,
-        );
+        page = TopAppBar();
         break;
       case 2:
         page = Placeholder();
