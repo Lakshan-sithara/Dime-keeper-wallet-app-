@@ -1,8 +1,10 @@
+import 'package:expence_master/models/Plan.dart';
 import 'package:expence_master/models/expence.dart';
 import 'package:flutter/material.dart';
 
 class AddPlan extends StatefulWidget {
-  const AddPlan({super.key});
+  final Function(PlanModel plan) onAddPlan;
+  const AddPlan({super.key, required this.onAddPlan});
 
   @override
   State<AddPlan> createState() => _AddPlanState();
@@ -43,6 +45,7 @@ class _AddPlanState extends State<AddPlan> {
   void _hadleGoalFormSubmit() {
     final planTitleText = _planTitleController.text.trim();
     final planText = _planController.text.trim();
+    final planAmount = int.parse(planText);
 
     if (planTitleText.isEmpty || planText.isEmpty) {
       showDialog(
@@ -61,6 +64,13 @@ class _AddPlanState extends State<AddPlan> {
           );
         },
       );
+    } else {
+      //create a new plan 
+      PlanModel plan = PlanModel(
+          title: planTitleText, date: _selectedDate, amount: planAmount);
+      //save data
+      widget.onAddPlan(plan);
+      Navigator.pop(context);
     }
   }
 

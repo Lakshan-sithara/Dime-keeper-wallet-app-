@@ -1,5 +1,6 @@
 import 'package:expence_master/models/Plan.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PlanList extends StatefulWidget {
   const PlanList({super.key, required this.planList});
@@ -26,8 +27,16 @@ class _PlanListState extends State<PlanList> {
                 plan.title,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(
-                'Progess: ${plan.amount}',
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Amount: ${plan.amount}',
+                  ),
+                  Text(
+                    'Payment Date: ${DateFormat.yMMMd().format(plan.date)}', // Assuming plan.date is a DateTime object
+                  ),
+                ],
               ),
               trailing: ElevatedButton(
                 onPressed: () {},

@@ -1,8 +1,11 @@
+import 'package:expence_master/models/Goal.dart';
 import 'package:expence_master/models/expence.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddNewGoals extends StatefulWidget {
-  const AddNewGoals({Key? key}) : super(key: key);
+  final Function(GoalModel) addNewGoal;
+  const AddNewGoals({Key? key, required this.addNewGoal}) : super(key: key);
 
   @override
   State<AddNewGoals> createState() => _AddNewGoalsState();
@@ -47,6 +50,11 @@ class _AddNewGoalsState extends State<AddNewGoals> {
     final titleText = _titleController.text.trim();
     final goalText = _goalController.text.trim();
 
+    //convert the goal amount to double
+    final target = int.parse(goalText);
+
+    final progress = int.parse(goalAmountText);
+
     // Check if the title or goal amount is empty
     if (titleText.isEmpty || goalAmountText.isEmpty || goalText.isEmpty) {
       showDialog(
@@ -68,8 +76,12 @@ class _AddNewGoalsState extends State<AddNewGoals> {
         },
       );
     } else {
+      //create a new goal
+      GoalModel newGoal = GoalModel(
+          title: titleText, date: _endDate, progress: progress, target: target);
       //save the data
-      print('save the data');
+      widget.addNewGoal(newGoal);
+      Navigator.pop(context);
     }
   }
 

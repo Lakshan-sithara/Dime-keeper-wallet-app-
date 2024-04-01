@@ -27,12 +27,28 @@ class _GoalsPageState extends State<GoalsPage> {
     PlanModel(title: "electric bill", date: DateTime.now(), amount: 1000)
   ];
 
+  //add new goal
+  void AddNewGoal(GoalModel goal) {
+    setState(() {
+      _goals.add(goal);
+    });
+  }
+
+  //add new plan
+  void onAddPlan(PlanModel plan) {
+    setState(() {
+      _plans.add(plan);
+    });
+  }
+
   //function to open goal model overlay
   void _openaddGoalsOverlay() {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return AddNewGoals();
+        return AddNewGoals(
+          addNewGoal: AddNewGoal,
+        );
       },
     );
   }
@@ -41,7 +57,9 @@ class _GoalsPageState extends State<GoalsPage> {
   void _openPlanOverlay() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => AddPlan(),
+      builder: (context) => AddPlan(
+        onAddPlan: onAddPlan,
+      ),
     );
   }
 
