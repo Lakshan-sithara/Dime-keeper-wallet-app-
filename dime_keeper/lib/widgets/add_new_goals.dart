@@ -10,6 +10,7 @@ class AddNewGoals extends StatefulWidget {
 
 class _AddNewGoalsState extends State<AddNewGoals> {
   final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
   final _goalController = TextEditingController();
 
   //date variables
@@ -40,17 +41,42 @@ class _AddNewGoalsState extends State<AddNewGoals> {
   }
 
   //handle form submit
-  void _handleGoalFormSubmit() {
-    //form validations
-    //convert the double in to a double
-    final goalAmount = double.parse(_goalController.toString().trim());
-    print(goalAmount);
+  void _handleAddGoalFormSubmit() {
+    // Get the text value from the _goalController
+    final goalAmountText = _amountController.text.trim();
+    final titleText = _titleController.text.trim();
+    final goalText = _goalController.text.trim();
+
+    // Check if the title or goal amount is empty
+    if (titleText.isEmpty || goalAmountText.isEmpty || goalText.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Enter valid data'),
+            content:
+                const Text('Please enter valid data for the amount and title'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      //save the data
+      print('save the data');
+    }
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _goalController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -61,6 +87,7 @@ class _AddNewGoalsState extends State<AddNewGoals> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          //add new goal
           TextField(
             controller: _titleController,
             decoration: const InputDecoration(
@@ -74,7 +101,7 @@ class _AddNewGoalsState extends State<AddNewGoals> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: _goalController,
+                  controller: _amountController,
                   decoration: const InputDecoration(
                     hintText: "Amount",
                     labelText: 'Add amount',
@@ -95,6 +122,14 @@ class _AddNewGoalsState extends State<AddNewGoals> {
                 ),
               ),
             ],
+          ),
+          TextField(
+            controller: _goalController,
+            decoration: const InputDecoration(
+              hintText: "Goal",
+              labelText: 'Add Goal',
+            ),
+            keyboardType: TextInputType.number,
           ),
           Expanded(
             child: Row(
@@ -117,7 +152,7 @@ class _AddNewGoalsState extends State<AddNewGoals> {
                 ),
                 //save button
                 ElevatedButton(
-                  onPressed: _handleGoalFormSubmit,
+                  onPressed: _handleAddGoalFormSubmit,
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.green)),
                   child:

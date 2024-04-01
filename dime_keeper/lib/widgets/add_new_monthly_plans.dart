@@ -39,6 +39,31 @@ class _AddPlanState extends State<AddPlan> {
     }
   }
 
+  //haddle form submit
+  void _hadleGoalFormSubmit() {
+    final planTitleText = _planTitleController.text.trim();
+    final planText = _planController.text.trim();
+
+    if (planTitleText.isEmpty || planText.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Enter valid data'),
+            content: const Text('Plaease Enter valid data'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Close'))
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   void dispose() {
     _planTitleController.dispose();
@@ -109,7 +134,7 @@ class _AddPlanState extends State<AddPlan> {
                 ),
                 //save button
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _hadleGoalFormSubmit,
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.green)),
                   child:
