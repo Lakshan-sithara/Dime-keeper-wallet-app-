@@ -1,4 +1,5 @@
 import 'package:expence_master/models/expence.dart';
+import 'package:expence_master/pages/Goals.dart';
 import 'package:expence_master/pages/expencers.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/top_navigation_bar.dart';
@@ -43,7 +44,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarWidget> {
         page = TopAppBar();
         break;
       case 2:
-        page = Placeholder();
+        page = GoalsPage();
         break;
       default:
         throw UnimplementedError('');
