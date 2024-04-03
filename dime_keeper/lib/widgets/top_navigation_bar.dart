@@ -1,6 +1,8 @@
 import 'package:expence_master/models/expence.dart';
+import 'package:expence_master/pages/budget.dart';
 import 'package:expence_master/pages/expencers.dart';
 import 'package:expence_master/server/database.dart';
+import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,7 @@ class _TopAppBarState extends State<TopAppBar> {
     Widget page;
     switch (currentIndex) {
       case 0:
-        page = Placeholder();
+        page = Expence();
         break;
       case 1:
         page = Placeholder();
@@ -33,6 +35,8 @@ class _TopAppBarState extends State<TopAppBar> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          //backgroundColor: const Color.fromARGB(255, 163, 237, 249),
+          title: const Center(child: DateWidget()),
           bottom: const TabBar(
             tabs: [
               Tab(
@@ -45,6 +49,7 @@ class _TopAppBarState extends State<TopAppBar> {
           ),
         ),
         body: TabBarView(children: [page, Placeholder()]),
+        backgroundColor: const Color.fromARGB(255, 163, 237, 249),
       ),
     );
   }
