@@ -44,9 +44,7 @@ class _GoalsPageState extends State<GoalsPage> {
   //remove goal
   void _handleDeleteGoal(GoalModel goal) {
     setState(() {
-      if (goal.progress == goal.target) {
-        _goals.remove(goal);
-      }
+      _goals.remove(goal);
     });
   }
 
@@ -77,6 +75,17 @@ class _GoalsPageState extends State<GoalsPage> {
         onAddPlan: onAddPlan,
       ),
     );
+  }
+
+  //update Add Goal values
+  void _updateGoalProgress(GoalModel goal, double amount) {
+    setState(() {
+      // Find the goal in the list and update its progress
+      final index = _goals.indexOf(goal);
+      if (index != -1) {
+        _goals[index].progress += amount.toInt();
+      }
+    });
   }
 
   @override
@@ -141,6 +150,7 @@ class _GoalsPageState extends State<GoalsPage> {
                   GoalList(
                     goalList: _goals,
                     onDeleteGoal: _handleDeleteGoal,
+                    onAddGoal: _updateGoalProgress,
                   ),
                   ElevatedButton(
                     onPressed: _openaddGoalsOverlay,

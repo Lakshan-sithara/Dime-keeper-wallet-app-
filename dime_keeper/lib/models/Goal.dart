@@ -12,7 +12,7 @@ class GoalModel {
 
   final String title;
   final DateTime date;
-  final int progress;
+   int progress;
   final int target;
   final String id;
 }

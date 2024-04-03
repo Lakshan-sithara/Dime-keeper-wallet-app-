@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 
 class GoalList extends StatelessWidget {
   final void Function(GoalModel goal) onDeleteGoal;
+  final void Function(GoalModel goal, double amount) onAddGoal;
   final List<GoalModel> goalList;
-  const GoalList({Key? key, required this.goalList, required this.onDeleteGoal})
+
+  const GoalList(
+      {Key? key,
+      required this.goalList,
+      required this.onDeleteGoal,
+      required this.onAddGoal})
       : super(key: key);
 
   @override
@@ -26,9 +32,18 @@ class GoalList extends StatelessWidget {
               subtitle: Text(
                 'Progress: ${goal.progress}/${goal.target}',
               ),
-              trailing: ElevatedButton(
-                onPressed: () => _openGoalEditOverlay(context),
-                child: const Text('Add'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _openGoalEditOverlay(context, goal),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => onDeleteGoal(goal),
+                  ),
+                ],
               ),
             ),
           );
@@ -37,11 +52,15 @@ class GoalList extends StatelessWidget {
     );
   }
 
-  void _openGoalEditOverlay(BuildContext context) {
+  void _openGoalEditOverlay(BuildContext context, GoalModel goal) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return const EditGoals();
+        return EditGoals(
+          onAddGoal: onAddGoal,
+          goalList: goalList.map((goal) => goal.title).toList(),
+          goal: goal,
+        );
       },
     );
   }

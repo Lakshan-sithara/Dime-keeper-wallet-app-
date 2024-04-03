@@ -115,6 +115,7 @@ class _AddPlanState extends State<AddPlan> {
                 child: Row(
                   children: [
                     Text(formattedDate.format(_selectedDate)),
+                    
                     IconButton(
                         onPressed: _openPDateModel,
                         icon: const Icon(Icons.calendar_month_outlined))
