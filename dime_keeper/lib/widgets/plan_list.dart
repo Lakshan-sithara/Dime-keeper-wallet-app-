@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class PlanList extends StatefulWidget {
-  const PlanList({super.key, required this.planList});
-
+  final void Function(PlanModel plan) onDeletePlan;
   final List<PlanModel> planList;
+
+  const PlanList({Key? key, required this.planList, required this.onDeletePlan})
+      : super(key: key);
 
   @override
   State<PlanList> createState() => _PlanListState();
@@ -38,8 +40,9 @@ class _PlanListState extends State<PlanList> {
                   ),
                 ],
               ),
-              trailing: ElevatedButton(
-                onPressed: () {},
+              trailing: ElevatedButton( 
+                onPressed: () => widget.onDeletePlan(
+                    plan), // Correctly pass the plan to the onDeletePlan function
                 child: const Icon(Icons.task_alt_rounded),
               ),
             ),
@@ -47,6 +50,5 @@ class _PlanListState extends State<PlanList> {
         },
       ),
     );
-    ;
   }
 }

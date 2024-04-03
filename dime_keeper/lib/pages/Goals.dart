@@ -50,6 +50,13 @@ class _GoalsPageState extends State<GoalsPage> {
     });
   }
 
+  //remove plan
+  void _onDeletePlan(PlanModel plan) {
+    setState(() {
+      _plans.remove(plan);
+    });
+  }
+
   //function to open goal model overlay
   void _openaddGoalsOverlay() {
     showModalBottomSheet(
@@ -185,7 +192,10 @@ class _GoalsPageState extends State<GoalsPage> {
                       )
                     ],
                   ),
-                  PlanList(planList: _plans),
+                  PlanList(
+                    planList: _plans,
+                    onDeletePlan: _onDeletePlan,
+                  ),
                   ElevatedButton(
                     onPressed: _openPlanOverlay,
                     child: const Text('Add New Plan'),
