@@ -34,30 +34,30 @@ class _ExpencersState extends State<Expencers> {
     db.updateData();
   }
 
-  void onDeleteExpence(ExpenceModel expence) {
-    ExpenceModel deletingExpence = expence;
-    final int removingIndex = db.expenceList.indexOf(expence);
-    setState(() {
-      db.expenceList.remove(expence);
-      db.updateData();
-      calCatagaryValue();
-    });
+  // void onDeleteExpence(ExpenceModel expence) {
+  //   ExpenceModel deletingExpence = expence;
+  //   final int removingIndex = db.expenceList.indexOf(expence);
+  //   setState(() {
+  //     db.expenceList.remove(expence);
+  //     db.updateData();
+  //     calCatagaryValue();
+  //   });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text("Delete Successful!"),
-        action: SnackBarAction(
-          label: "Undo",
-          onPressed: () {
-            setState(() {
-              db.expenceList.insert(removingIndex, deletingExpence);
-              calCatagaryValue();
-            });
-          },
-        ),
-      ),
-    );
-  }
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: const Text("Delete Successful!"),
+  //       action: SnackBarAction(
+  //         label: "Undo",
+  //         onPressed: () {
+  //           setState(() {
+  //             db.expenceList.insert(removingIndex, deletingExpence);
+  //             calCatagaryValue();
+  //           });
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 
   double foodVal = 0;
   double travelVal = 0;
