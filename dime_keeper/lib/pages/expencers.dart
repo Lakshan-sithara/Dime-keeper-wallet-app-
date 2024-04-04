@@ -147,6 +147,7 @@ class _ExpencersState extends State<Expencers> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
+                  
                   child: PieChart(dataMap: dataMap),
                 ),
                 const SizedBox(height: 10),
