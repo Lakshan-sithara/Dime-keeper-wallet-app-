@@ -3,7 +3,6 @@ import "package:expence_master/models/expence.dart";
 import "package:expence_master/server/categary_adapter.dart";
 import "package:expence_master/widgets/bottom_navigation_bar.dart";
 import "package:flutter/material.dart";
-import "package:hive/hive.dart";
 import "package:hive_flutter/adapters.dart";
 
 void main() async {
