@@ -152,6 +152,7 @@ class _AddNewExpenceState extends State<AddNewExpence> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            
             children: [
               //colse the model buttone
               ElevatedButton(
