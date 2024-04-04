@@ -1,5 +1,6 @@
 import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/pages/budget.dart';
+import 'package:expence_master/pages/budget_income.dart';
 import 'package:expence_master/pages/expencers.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
@@ -26,7 +27,7 @@ class _TopAppBarState extends State<TopAppBar> {
         page = Expence();
         break;
       case 1:
-        page = Placeholder();
+        page = Income();
         break;
       default:
         throw UnimplementedError('');
@@ -48,7 +49,7 @@ class _TopAppBarState extends State<TopAppBar> {
             ],
           ),
         ),
-        body: TabBarView(children: [page, Placeholder()]),
+        body: const TabBarView(children: [Expence(), Income()]),
         backgroundColor: const Color.fromARGB(255, 163, 237, 249),
       ),
     );
