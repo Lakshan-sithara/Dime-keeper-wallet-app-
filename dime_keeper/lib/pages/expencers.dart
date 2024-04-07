@@ -25,7 +25,9 @@ class _ExpencersState extends State<Expencers> {
     "Work": 0,
   };
 
+
   double totalExpense = 0;
+
 
   void onAddNewExpence(ExpenceModel expence) {
     setState(() {
