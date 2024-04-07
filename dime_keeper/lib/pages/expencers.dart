@@ -127,6 +127,7 @@ class _ExpencersState extends State<Expencers> {
       ),
       body: Stack(
         children: [
+<<<<<<< Updated upstream
           SingleChildScrollView(
             // Wrap the Column with SingleChildScrollView
             child: Container(
@@ -194,6 +195,19 @@ class _ExpencersState extends State<Expencers> {
                     //   onDeleteExpence: onDeleteExpence,
                     // ),
                   ],
+=======
+          Container(
+            color: const Color.fromARGB(255, 170, 241, 250),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: PieChart(dataMap: dataMap),
+>>>>>>> Stashed changes
                 ),
               ),
             ),
