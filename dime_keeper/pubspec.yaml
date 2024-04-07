@@ -41,6 +41,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   syncfusion_flutter_charts: ^24.2.9
+  fl_chart: ^0.67.0
+  
 
   
 

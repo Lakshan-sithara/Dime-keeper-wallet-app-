@@ -24,15 +24,18 @@ class _ExpenceState extends State<Expence> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ExpenceList(
-            expenceList: db.expenceList,
-            onDeleteExpence: onDeleteExpence,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: ExpenceList(
+              expenceList: db.expenceList,
+              onDeleteExpence: onDeleteExpence,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

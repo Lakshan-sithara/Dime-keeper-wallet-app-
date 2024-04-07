@@ -4,9 +4,8 @@ import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
-//import 'package:expence_master/widgets/overviwe_card.dart'; // Assuming your OverViweCard widget is in overviwe_card.dart
 import 'package:hive/hive.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:fl_chart/fl_chart.dart'; // Import fl_chart package for DonutPieChart
 
 class Expencers extends StatefulWidget {
   const Expencers({Key? key}) : super(key: key);
@@ -26,6 +25,8 @@ class _ExpencersState extends State<Expencers> {
     "Work": 0,
   };
 
+  double totalExpense = 0;
+
   void onAddNewExpence(ExpenceModel expence) {
     setState(() {
       db.expenceList.add(expence);
@@ -33,31 +34,6 @@ class _ExpencersState extends State<Expencers> {
     });
     db.updateData();
   }
-
-  // void onDeleteExpence(ExpenceModel expence) {
-  //   ExpenceModel deletingExpence = expence;
-  //   final int removingIndex = db.expenceList.indexOf(expence);
-  //   setState(() {
-  //     db.expenceList.remove(expence);
-  //     db.updateData();
-  //     calCatagaryValue();
-  //   });
-
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: const Text("Delete Successful!"),
-  //       action: SnackBarAction(
-  //         label: "Undo",
-  //         onPressed: () {
-  //           setState(() {
-  //             db.expenceList.insert(removingIndex, deletingExpence);
-  //             calCatagaryValue();
-  //           });
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
   double foodVal = 0;
   double travelVal = 0;
@@ -97,6 +73,19 @@ class _ExpencersState extends State<Expencers> {
       "Leasure": leasureVal,
       "Work": workVal,
     };
+
+    setState(() {
+      dataMap = {
+        "Food": foodValTotal,
+        "Travel": travelValTotal,
+        "Leisure": leasureValTotal,
+        "Work": workValTotal,
+      };
+      totalExpense = foodValTotal +
+          travelValTotal +
+          leasureValTotal +
+          workValTotal; // Update totalExpense
+    });
   }
 
   @override
@@ -137,33 +126,75 @@ class _ExpencersState extends State<Expencers> {
       ),
       body: Stack(
         children: [
-          Container(
-            color: const Color.fromARGB(255, 170, 241, 250),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  
-                  child: PieChart(dataMap: dataMap),
+          SingleChildScrollView(
+            // Wrap the Column with SingleChildScrollView
+            child: Container(
+              color: const Color.fromARGB(255, 170, 241, 250),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Expense Structure',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            const Text(
+                              'THIS MONTH',
+                            ),
+                            Text(
+                              'LKR $totalExpense',
+                              style: const TextStyle(fontSize: 30),
+                            ),
+                            Center(
+                              child: SizedBox(
+                                width: 250, // Adjust the width of the SizedBox
+                                height:
+                                    250, // Adjust the height of the SizedBox
+                                child: PieChart(
+                                  PieChartData(
+                                    sections: dataMap.entries.map((entry) {
+                                      return PieChartSectionData(
+                                        color: _getColor(entry.key),
+                                        value: entry.value,
+                                        title: entry.key,
+                                        radius: 100,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      child: OverViweCard(
+                          dataMap: dataMap), // Use OverViweCard with dataMap
+                    ),
+                    // ExpenceList(
+                    //   expenceList: db.expenceList,
+                    //   onDeleteExpence: onDeleteExpence,
+                    // ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  child: OverViweCard(
-                      dataMap: dataMap), // Use OverViweCard with dataMap
-                ),
-                // ExpenceList(
-                //   expenceList: db.expenceList,
-                //   onDeleteExpence: onDeleteExpence,
-                // ),
-              ],
+              ),
             ),
           ),
           //###### Add Button ######
@@ -186,5 +217,23 @@ class _ExpencersState extends State<Expencers> {
         ],
       ),
     );
+  }
+
+  Color _getColor(String category) {
+    // Add logic to return colors based on categories
+    // For example, you can return different colors for Food, Travel, Leisure, Work, etc.
+    // You can use switch statements or if-else conditions to define colors based on categories.
+    switch (category) {
+      case 'Food':
+        return Colors.red;
+      case 'Travel':
+        return Colors.blue;
+      case 'Leisure':
+        return Colors.green;
+      case 'Work':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
   }
 }
