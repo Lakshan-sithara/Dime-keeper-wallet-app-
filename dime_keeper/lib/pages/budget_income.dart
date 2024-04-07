@@ -46,66 +46,69 @@ class _IncomeState extends State<Income> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 163, 237, 249),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Center(
-              child: Text(
-                'Budgets',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Center(
+                child: Text(
+                  'Budgets',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Colors.blueGrey[100],
-                            borderRadius: BorderRadius.circular(35),
-                          ),
-                          child: const Icon(
-                            Icons.monetization_on_outlined,
-                            size: 50,
-                            color: Colors.green,
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              color: Colors.blueGrey[100],
+                              borderRadius: BorderRadius.circular(35),
+                            ),
+                            child: const Icon(
+                              Icons.monetization_on_outlined,
+                              size: 50,
+                              color: Colors.green,
+                            ),
                           ),
                         ),
-                      ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Budget',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text('How much I can spend'),
-                        ],
-                      )
-                    ],
-                  ),
-                  BudgetList(
-                      budgetList: _budgetList,
-                      onDeleteBudget: _handleDeleteBudget),
-                  ElevatedButton(
-                    onPressed: _openaddBudgetOverlay,
-                    child: const Text('Create New Budget'),
-                  )
-                ],
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Budget',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            Text('How much I can spend'),
+                          ],
+                        )
+                      ],
+                    ),
+                    BudgetList(
+                        budgetList: _budgetList,
+                        onDeleteBudget: _handleDeleteBudget),
+                    ElevatedButton(
+                      onPressed: _openaddBudgetOverlay,
+                      child: const Text('Create New Budget'),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
