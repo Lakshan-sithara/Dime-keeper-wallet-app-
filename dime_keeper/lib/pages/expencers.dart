@@ -5,7 +5,7 @@ import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
 import 'package:hive/hive.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart/fl_chart.dart'; // Import fl_chart package for DonutPieChart
 
 class Expencers extends StatefulWidget {
   const Expencers({Key? key}) : super(key: key);
@@ -25,9 +25,7 @@ class _ExpencersState extends State<Expencers> {
     "Work": 0,
   };
 
-
   double totalExpense = 0;
-
 
   void onAddNewExpence(ExpenceModel expence) {
     setState(() {
@@ -80,7 +78,7 @@ class _ExpencersState extends State<Expencers> {
       dataMap = {
         "Food": foodValTotal,
         "Travel": travelValTotal,
-        "Leasure": leasureValTotal,
+        "Leisure": leasureValTotal,
         "Work": workValTotal,
       };
       totalExpense = foodValTotal +
@@ -158,8 +156,8 @@ class _ExpencersState extends State<Expencers> {
                           ),
                           Center(
                             child: SizedBox(
-                              width: 300,
-                              height: 300,
+                              width: 250, // Adjust the width of the SizedBox
+                              height: 250, // Adjust the height of the SizedBox
                               child: PieChart(
                                 PieChartData(
                                   sections: dataMap.entries.map((entry) {
@@ -219,7 +217,8 @@ class _ExpencersState extends State<Expencers> {
 
   Color _getColor(String category) {
     // Add logic to return colors based on categories
-
+    // For example, you can return different colors for Food, Travel, Leisure, Work, etc.
+    // You can use switch statements or if-else conditions to define colors based on categories.
     switch (category) {
       case 'Food':
         return Colors.red;
