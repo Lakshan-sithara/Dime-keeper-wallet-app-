@@ -1,9 +1,12 @@
 import 'package:expence_master/widgets/last_recode_overviwe.dart';
+import 'package:expence_master/widgets/menu.dart';
+import 'package:expence_master/widgets/textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:expence_master/models/expence.dart';
 import 'package:expence_master/server/database.dart';
 import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:hive/hive.dart';
 import 'package:fl_chart/fl_chart.dart'; // Import fl_chart package for DonutPieChart
 
@@ -110,128 +113,115 @@ class _ExpencersState extends State<Expencers> {
       },
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DateWidget(),
-          ],
+        body: SliderDrawer(
+      appBar: SliderAppBar(
+        appBarColor: Color(0xFFC9EDF7),
+        title: Text(
+          "Dashboard",
+          style: TextBlackStyleTopNavHeading(),
         ),
-        backgroundColor: const Color.fromARGB(255, 163, 237, 249),
-        elevation: 3,
       ),
-      body: Stack(
-        children: [
-<<<<<<< Updated upstream
-          SingleChildScrollView(
-            // Wrap the Column with SingleChildScrollView
-            child: Container(
-              color: const Color.fromARGB(255, 170, 241, 250),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Expense Structure',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            const Text(
-                              'THIS MONTH',
-                            ),
-                            Text(
-                              'LKR $totalExpense',
-                              style: const TextStyle(fontSize: 30),
-                            ),
-                            Center(
-                              child: SizedBox(
-                                width: 250, // Adjust the width of the SizedBox
-                                height:
-                                    250, // Adjust the height of the SizedBox
-                                child: PieChart(
-                                  PieChartData(
-                                    sections: dataMap.entries.map((entry) {
-                                      return PieChartSectionData(
-                                        color: _getColor(entry.key),
-                                        value: entry.value,
-                                        title: entry.key,
-                                        radius: 100,
-                                      );
-                                    }).toList(),
+      slider: Menu(),
+      child: Container(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              // Wrap the Column with SingleChildScrollView
+              child: Container(
+                color: const Color(0xFFDFF8FF),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Expense Structure',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              const Text(
+                                'THIS MONTH',
+                              ),
+                              Text(
+                                'LKR $totalExpense',
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                              Center(
+                                child: SizedBox(
+                                  width:
+                                      250, // Adjust the width of the SizedBox
+                                  height:
+                                      250, // Adjust the height of the SizedBox
+                                  child: PieChart(
+                                    PieChartData(
+                                      sections: dataMap.entries.map((entry) {
+                                        return PieChartSectionData(
+                                          color: _getColor(entry.key),
+                                          value: entry.value,
+                                          title: entry.key,
+                                          radius: 100,
+                                        );
+                                      }).toList(),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white,
+                        ),
+                        child: OverViweCard(
+                            dataMap: dataMap), // Use OverViweCard with dataMap
                       ),
-                      child: OverViweCard(
-                          dataMap: dataMap), // Use OverViweCard with dataMap
-                    ),
-                    // ExpenceList(
-                    //   expenceList: db.expenceList,
-                    //   onDeleteExpence: onDeleteExpence,
-                    // ),
-                  ],
-=======
-          Container(
-            color: const Color.fromARGB(255, 170, 241, 250),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                      // ExpenceList(
+                      //   expenceList: db.expenceList,
+                      //   onDeleteExpence: onDeleteExpence,
+                      // ),
+                    ],
                   ),
-                  child: PieChart(dataMap: dataMap),
->>>>>>> Stashed changes
                 ),
               ),
             ),
-          ),
-          //###### Add Button ######
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: FloatingActionButton(
-                onPressed: _openAddExpencesOverlay,
-                backgroundColor: Colors.blue,
-                elevation: 5,
-                child: const Icon(
-                  Icons.add,
-                  size: 32,
+            //###### Add Button ######
+            Positioned(
+              bottom: 16,
+              right: 16,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: FloatingActionButton(
+                  onPressed: _openAddExpencesOverlay,
+                  backgroundColor: Colors.blue,
+                  elevation: 5,
+                  child: const Icon(
+                    Icons.add,
+                    size: 32,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
+    ));
   }
 
   Color _getColor(String category) {

@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         '/editprofile': (context) => ProfileScreen(),
         '/changeprofilepic': (context) => ProfilePicScreen(),
       },
-      initialRoute: '/onbording',
+      initialRoute: '/dashboard',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFDFF8FF),
         colorSchemeSeed: Color(0xFF125A93),
