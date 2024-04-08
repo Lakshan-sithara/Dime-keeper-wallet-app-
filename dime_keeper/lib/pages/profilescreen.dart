@@ -13,15 +13,17 @@ class ProfileScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: SliderDrawer(
         appBar: SliderAppBar(
-          appBarColor: Color(0xFFC9EDF7),
-          title: Text(
-            "Profile",
-            style: TextBlackStyleTopNavHeading(),
-          ),
-          trailing: Icon(
-            Icons.check,
-          ),
-        ),
+            appBarColor: const Color(0xFFC9EDF7),
+            title: Text(
+              "Profile",
+              style: TextBlackStyleTopNavHeading(),
+            ),
+            trailing: IconButton(
+              onPressed: Navigator.of(context).pop,
+              icon:
+                  const Icon(Icons.check), // Wrap Icons.check with Icon widget
+              color: Colors.black,
+            )),
         slider: Menu(),
         child: Container(
           color: Color(0xFFDFF8FF),
