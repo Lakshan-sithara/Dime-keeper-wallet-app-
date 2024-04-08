@@ -103,14 +103,20 @@ class _ExpencersState extends State<Expencers> {
     }
   }
 
-  void _openAddExpencesOverlay() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AddNewExpence(
-          onAddExpence: onAddNewExpence,
-        );
-      },
+  void _openAddExpensesOverlay() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          // appBar: AppBar(
+          //   title: const Text('Add Expense'),
+          //   backgroundColor:const Color(0xFFC9EDF7),
+          // ),
+          body: AddNewExpence(
+            onAddExpence: onAddNewExpence,
+          ),
+        ),
+      ),
     );
   }
 
@@ -208,7 +214,7 @@ class _ExpencersState extends State<Expencers> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: FloatingActionButton(
-                  onPressed: _openAddExpencesOverlay,
+                  onPressed: _openAddExpensesOverlay,
                   backgroundColor: Colors.blue,
                   elevation: 5,
                   child: const Icon(

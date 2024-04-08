@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:expence_master/models/expence.dart';
 
 class AddNewExpence extends StatefulWidget {
   final void Function(ExpenceModel expence) onAddExpence;
-  const AddNewExpence({super.key, required this.onAddExpence});
+
+  const AddNewExpence({Key? key, required this.onAddExpence}) : super(key: key);
 
   @override
   State<AddNewExpence> createState() => _AddNewExpenceState();
@@ -15,177 +17,184 @@ class _AddNewExpenceState extends State<AddNewExpence> {
 
   Chatagary _selectedCategary = Chatagary.leasure;
 
-  //date picker
   final DateTime initialDate = DateTime.now();
   final DateTime firstDate = DateTime(
-      DateTime.now().year - 1, DateTime.now().month, DateTime.now().day);
+    DateTime.now().year - 1,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
   final DateTime lastDate = DateTime(
-      DateTime.now().year + 1, DateTime.now().month, DateTime.now().day);
+    DateTime.now().year + 1,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
 
   DateTime _selectedDate = DateTime.now();
 
-  //date picker
+  final DateFormat formattedDate = DateFormat('yyyy-MM-dd');
+
   Future<void> _openDateModel() async {
     try {
-      //show the date model then store the user selected date
       final pickDate = await showDatePicker(
-          context: context,
-          firstDate: firstDate,
-          lastDate: lastDate,
-          initialDate: initialDate);
+        context: context,
+        firstDate: firstDate,
+        lastDate: lastDate,
+        initialDate: initialDate,
+      );
 
-      setState(() {
-        _selectedDate = pickDate!;
-      });
+      if (pickDate != null) {
+        setState(() {
+          _selectedDate = pickDate;
+        });
+      }
     } catch (err) {
       print(err.toString());
     }
   }
 
-  //handle form submit
   void _handleFormSubmit() {
-    //form validations
-    //convert amount in to a double
-    final userAmount = double.parse(_amountController.text.trim());
-    if (_titleController.text.trim().isEmpty ||
-        _amountController.text.isEmpty) {
+    final userAmountText = _amountController.text.trim();
+    if (_titleController.text.trim().isEmpty || userAmountText.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: const Text('Enter valid data'),
             content: const Text(
-                "Please enter the valid data for the title and the amount here the title can't be empty and the amount can't be less than zero"),
+              "Please enter valid data for the title and the amount. The title can't be empty, and the amount can't be less than zero.",
+            ),
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Close'))
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
             ],
           );
         },
       );
     } else {
-      //create the new expence
-      ExpenceModel newExpence = ExpenceModel(
+      final userAmount = double.tryParse(userAmountText);
+      if (userAmount != null && userAmount > 0) {
+        ExpenceModel newExpence = ExpenceModel(
           amount: userAmount,
           title: _titleController.text.trim(),
           date: _selectedDate,
-          categary: _selectedCategary);
-      //save the data
-      widget.onAddExpence(newExpence);
-      Navigator.pop(context);
+          categary: _selectedCategary,
+        );
+        widget.onAddExpence(newExpence);
+        Navigator.pop(context);
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Enter valid amount'),
+              content:
+                  const Text('Please enter a valid amount greater than zero.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _titleController.dispose();
     _amountController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          //title text fild
-          TextField(
-            controller: _titleController,
-            decoration: const InputDecoration(
-              hintText: 'Add new expence title',
-              label: Text('Title'),
-            ),
-            keyboardType: TextInputType.text,
-            maxLength: 50,
-          ),
-          Row(
-            children: [
-              //amount
-              Expanded(
-                child: TextField(
-                  controller: _amountController,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Expense'),
+        backgroundColor: const Color(0xFFC9EDF7),
+        actions: [
+          IconButton(
+              onPressed: _handleFormSubmit, icon: const Icon(Icons.check))
+        ],
+      ),
+      body: Container(
+        color: Color(0xFFDFF8FF), // Set the background color here
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _titleController,
                   decoration: const InputDecoration(
-                    hintText: 'Amount',
-                    label: Text('Enter amount here'),
+                    hintText: 'Add new expense title',
+                    labelText: 'Title',
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
+                  maxLength: 50,
                 ),
-              ),
-              //date picker
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                const SizedBox(height: 10),
+                Row(
                   children: [
-                    Text(
-                      formattedDate.format(_selectedDate),
+                    Expanded(
+                      child: TextField(
+                        controller: _amountController,
+                        decoration: const InputDecoration(
+                          hintText: 'Amount',
+                          labelText: 'Enter amount here',
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
-                    IconButton(
-                      onPressed: _openDateModel,
-                      icon: const Icon(Icons.date_range_rounded),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formattedDate.format(_selectedDate)),
+                          IconButton(
+                            onPressed: _openDateModel,
+                            icon: const Icon(Icons.date_range_rounded),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 25),
+                Row(
+                  children: [
+                    const Text('Select a category: '),
+                    const SizedBox(width: 10),
+                    DropdownButton(
+                      value: _selectedCategary,
+                      items: Chatagary.values
+                          .map((categary) => DropdownMenuItem(
+                                value: categary,
+                                child: Text(categary.name),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCategary = value!;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              DropdownButton(
-                  value: _selectedCategary,
-                  items: Chatagary.values
-                      .map((Chatagary) => DropdownMenuItem(
-                            value: Chatagary,
-                            child: Text(Chatagary.name),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategary = value!;
-                    });
-                  })
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            
-            children: [
-              //colse the model buttone
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.redAccent),
-                ),
-                child: const Text(
-                  'close',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-
-              //save button
-
-              ElevatedButton(
-                onPressed: _handleFormSubmit,
-                style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.green),
-                ),
-                child: const Text(
-                  'Save',
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          )
-        ],
+        ),
       ),
     );
   }
