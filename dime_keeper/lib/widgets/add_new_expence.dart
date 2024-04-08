@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expence_master/models/expence.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddNewExpence extends StatefulWidget {
   final void Function(ExpenceModel expence) onAddExpence;
@@ -14,6 +17,7 @@ class AddNewExpence extends StatefulWidget {
 class _AddNewExpenceState extends State<AddNewExpence> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  File? _imageFile;
 
   Chatagary _selectedCategary = Chatagary.leasure;
 
@@ -115,6 +119,41 @@ class _AddNewExpenceState extends State<AddNewExpence> {
     super.dispose();
   }
 
+  //image picker
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: source);
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
+  }
+
+  // Method to select an image from the gallery
+  Future<void> _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
+  }
+
+  // Method to take a photo using the device's camera
+  Future<void> _takePhoto() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,96 +167,133 @@ class _AddNewExpenceState extends State<AddNewExpence> {
           ),
         ],
       ),
-      body: Container(
-        color: const Color(0xFFDFF8FF),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        child: Container(
+          color: const Color(0xFFDFF8FF),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Title'),
-                TextField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    hintText: 'Add new expense title',
-                    filled: true,
-                    fillColor: Colors.white,
+            padding: const EdgeInsets.all(16.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Title'),
+                  TextField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      hintText: 'Add new expense title',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    keyboardType: TextInputType.text,
+                    maxLength: 50,
                   ),
-                  keyboardType: TextInputType.text,
-                  maxLength: 50,
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Amount'),
-                          TextField(
-                            controller: _amountController,
-                            decoration: const InputDecoration(
-                              hintText: 'Amount',
-                              //labelText: 'Enter amount here',
-                              filled: true,
-                              fillColor: Colors.white,
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Amount'),
+                            TextField(
+                              controller: _amountController,
+                              decoration: const InputDecoration(
+                                hintText: 'Amount',
+                                //labelText: 'Enter amount here',
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                              keyboardType: TextInputType.number,
                             ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(formattedDate.format(_selectedDate)),
-                          IconButton(
-                            onPressed: _openDateModel,
-                            icon: const Icon(Icons.date_range_rounded),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                Row(
-                  children: [
-                    const Text('Select a category: '),
-                    const SizedBox(width: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButton(
-                          value: _selectedCategary,
-                          items: Chatagary.values
-                              .map((categary) => DropdownMenuItem(
-                                    value: categary,
-                                    child: Text(categary.name),
-                                  ))
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCategary = value!;
-                            });
-                          },
-                          dropdownColor: Colors.white,
+                          ],
                         ),
                       ),
+                      const SizedBox(width: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(formattedDate.format(_selectedDate)),
+                            IconButton(
+                              onPressed: _openDateModel,
+                              icon: const Icon(Icons.date_range_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    children: [
+                      const Text('Select a category: '),
+                      const SizedBox(width: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: DropdownButton(
+                            value: _selectedCategary,
+                            items: Chatagary.values
+                                .map((categary) => DropdownMenuItem(
+                                      value: categary,
+                                      child: Text(categary.name),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCategary = value!;
+                              });
+                            },
+                            dropdownColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  const Text('Add note'),
+                  const TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Add a note',
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                  ],
-                ),
-              ],
+                    keyboardType: TextInputType.text,
+                    maxLength: 100,
+                  ),
+                  const SizedBox(height: 25),
+                  //image picker
+                  Text('Add a receipt'),
+                  Row(
+                    children: [
+                      const Text('Add a receipt'),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        onPressed: _pickImageFromGallery,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.image),
+                        onPressed: _takePhoto,
+                      ),
+                    ],
+                  ),
+                  if (_imageFile !=
+                      null) // Display the selected image if available
+                    Image.file(
+                      _imageFile!,
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                ],
+              ),
             ),
           ),
         ),

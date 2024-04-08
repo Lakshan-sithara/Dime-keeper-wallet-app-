@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   expandable_page_view: ^1.0.17
   flutter_slider_drawer: ^2.1.3
+  image_picker: ^0.8.4+5
   
 
 dev_dependencies:

@@ -27,10 +27,10 @@ class _TopAppBarState extends State<TopAppBar> {
     Widget page;
     switch (currentIndex) {
       case 0:
-        page = Expence();
+        page = Income();
         break;
       case 1:
-        page = Income();
+        page = Expence();
         break;
       default:
         throw UnimplementedError('');
@@ -55,10 +55,10 @@ class _TopAppBarState extends State<TopAppBar> {
                   child: const TabBar(
                     tabs: [
                       Tab(
-                        text: 'Expense',
+                        text: 'Income',
                       ),
                       Tab(
-                        text: 'Income',
+                        text: 'Expense',
                       ),
                     ],
                   ),
@@ -66,7 +66,7 @@ class _TopAppBarState extends State<TopAppBar> {
                 Container(
                     color: const Color(0xFFDFF8FF),
                     height: MediaQuery.of(context).size.height,
-                    child: const TabBarView(children: [Expence(), Income()])),
+                    child: const TabBarView(children: [Income(), Expence()])),
               ],
             )),
           ),
