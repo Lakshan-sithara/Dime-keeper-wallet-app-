@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AddNewBudget extends StatefulWidget {
   final void Function(BudgetModel budget) onAddBudget;
-  const AddNewBudget({super.key, required this.onAddBudget});
+  const AddNewBudget({Key? key, required this.onAddBudget}) : super(key: key);
 
   @override
   State<AddNewBudget> createState() => _AddNewBudgetState();
@@ -20,9 +20,9 @@ class _AddNewBudgetState extends State<AddNewBudget> {
     super.dispose();
   }
 
-  //handle form submit
+  // handle form submit
   void _handleFormSubmit() {
-    //form validations
+    // form validations
     final userAmount = int.tryParse(_budgetAmountController.text.trim());
     if (_budgetTitleController.text.trim().isEmpty ||
         _budgetAmountController.text.trim().isEmpty ||
@@ -40,19 +40,20 @@ class _AddNewBudgetState extends State<AddNewBudget> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Ok'),
+                child: const Text('Close'),
               )
             ],
           );
         },
       );
     } else {
-      //create the new expence
+      // create the new expense
       final newBudget = BudgetModel(
-          budget: userAmount,
-          spent: 0,
-          title: _budgetTitleController.text.trim());
-      //add new budget
+        budget: userAmount,
+        spent: 0,
+        title: _budgetTitleController.text.trim(),
+      );
+      // add new budget
       widget.onAddBudget(newBudget);
       Navigator.of(context).pop();
     }
@@ -60,51 +61,54 @@ class _AddNewBudgetState extends State<AddNewBudget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: _budgetTitleController,
-          decoration: const InputDecoration(
-            labelText: 'Title',
-            hintText: 'Enter the title',
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add New Budget'),
+        backgroundColor: const Color(0xFFC9EDF7),
+        actions: [
+          IconButton(
+            onPressed: _handleFormSubmit,
+            icon: const Icon(Icons.check),
+          )
+        ],
+      ),
+      body: Container(
+        color: Color(0xFFDFF8FF),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Title'),
+                TextField(
+                  controller: _budgetTitleController,
+                  decoration: const InputDecoration(
+                    //labelText: 'Title',
+                    hintText: 'Enter the title',
+                    filled: true,
+                    fillColor: Colors.white, // Set background color here
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text('Budget'),
+                TextField(
+                  controller: _budgetAmountController,
+                  decoration: const InputDecoration(
+                    //labelText: 'Budget',
+                    hintText: 'Enter the budget amount',
+                    filled: true,
+                    fillColor: Colors.white, // Set background color here
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
-        TextField(
-          controller: _budgetAmountController,
-          decoration: const InputDecoration(
-            labelText: 'Budget',
-            hintText: 'Enter the budget amount',
-          ),
-          keyboardType: TextInputType.number,
-        ),
-        const SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.white),
-                )),
-            const SizedBox(width: 20),
-            ElevatedButton(
-                onPressed: () {
-                  _handleFormSubmit();
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                ),
-                child:
-                    const Text('Add', style: TextStyle(color: Colors.white))),
-          ],
-        )
-      ],
+      ),
     );
   }
 }

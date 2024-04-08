@@ -108,10 +108,7 @@ class _ExpencersState extends State<Expencers> {
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
-          // appBar: AppBar(
-          //   title: const Text('Add Expense'),
-          //   backgroundColor:const Color(0xFFC9EDF7),
-          // ),
+          
           body: AddNewExpence(
             onAddExpence: onAddNewExpence,
           ),

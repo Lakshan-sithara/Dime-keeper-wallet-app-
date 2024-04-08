@@ -1,10 +1,10 @@
 import 'package:expence_master/models/Plan.dart';
-import 'package:expence_master/models/expence.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddPlan extends StatefulWidget {
   final Function(PlanModel plan) onAddPlan;
-  const AddPlan({super.key, required this.onAddPlan});
+  const AddPlan({Key? key, required this.onAddPlan}) : super(key: key);
 
   @override
   State<AddPlan> createState() => _AddPlanState();
@@ -14,38 +14,33 @@ class _AddPlanState extends State<AddPlan> {
   final _planTitleController = TextEditingController();
   final _planController = TextEditingController();
 
-  //date variables
-  final DateTime initialDate = DateTime.now();
-  final DateTime firstDate = DateTime(
-      DateTime.now().year - 1, DateTime.now().month, DateTime.now().day);
-  final DateTime lastDate = DateTime(
-      DateTime.now().year + 1, DateTime.now().month, DateTime.now().day);
+  final DateFormat formattedDate = DateFormat('yyyy-MM-dd');
 
   DateTime _selectedDate = DateTime.now();
 
-  //date picker
   Future<void> _openPDateModel() async {
     try {
-      //show the date model then store the user selected date
       final pickDate = await showDatePicker(
-          context: context,
-          firstDate: firstDate,
-          lastDate: lastDate,
-          initialDate: initialDate);
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 1),
+        lastDate: DateTime(DateTime.now().year + 1),
+      );
 
-      setState(() {
-        _selectedDate = pickDate!;
-      });
+      if (pickDate != null) {
+        setState(() {
+          _selectedDate = pickDate;
+        });
+      }
     } catch (err) {
       print(err.toString());
     }
   }
 
-  //haddle form submit
   void _hadleGoalFormSubmit() {
     final planTitleText = _planTitleController.text.trim();
     final planText = _planController.text.trim();
-    final planAmount = int.parse(planText);
+    final planAmount = int.tryParse(planText) ?? 0;
 
     if (planTitleText.isEmpty || planText.isEmpty) {
       showDialog(
@@ -53,22 +48,24 @@ class _AddPlanState extends State<AddPlan> {
         builder: (context) {
           return AlertDialog(
             title: const Text('Enter valid data'),
-            content: const Text('Plaease Enter valid data'),
+            content: const Text('Please enter valid data'),
             actions: [
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Close'))
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
             ],
           );
         },
       );
     } else {
-      //create a new plan 
       PlanModel plan = PlanModel(
-          title: planTitleText, date: _selectedDate, amount: planAmount);
-      //save data
+        title: planTitleText,
+        date: _selectedDate,
+        amount: planAmount,
+      );
       widget.onAddPlan(plan);
       Navigator.pop(context);
     }
@@ -83,78 +80,77 @@ class _AddPlanState extends State<AddPlan> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: _planTitleController,
-            decoration: const InputDecoration(
-              hintText: "Add new Goal title",
-              labelText: 'Title',
-            ),
-            maxLength: 50,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add new Plan'),
+        backgroundColor: const Color(0xFFC9EDF7),
+        actions: [
+          IconButton(
+            onPressed: _hadleGoalFormSubmit,
+            icon: const Icon(Icons.check),
           ),
-          const SizedBox(height: 8), // Add spacing between fields
-          Row(
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFFDFF8FF),
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: TextField(
-                  controller: _planController,
-                  decoration: const InputDecoration(
-                    hintText: "Amount",
-                    labelText: 'Add amount',
-                  ),
-                  keyboardType: TextInputType.number,
+              const Text('Title'),
+              TextField(
+                controller: _planTitleController,
+                decoration: const InputDecoration(
+                  hintText: "Add new Goal title",
+                  //labelText: 'Title',
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
+                maxLength: 50,
               ),
-              const SizedBox(width: 8), // Add spacing between fields
-              // Date picker
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(formattedDate.format(_selectedDate)),
-                    
-                    IconButton(
-                        onPressed: _openPDateModel,
-                        icon: const Icon(Icons.calendar_month_outlined))
-                  ],
-                ),
+              const SizedBox(height: 8), // Add spacing between fields
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Add Amount'),
+                        TextField(
+                          controller: _planController,
+                          decoration: const InputDecoration(
+                            hintText: "Amount",
+                            filled: true,
+                            fillColor: Colors.white,
+                            //labelText: 'Add amount',
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8), // Add spacing between fields
+                  // Date picker
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(formattedDate.format(_selectedDate)),
+                        IconButton(
+                          onPressed: _openPDateModel,
+                          icon: const Icon(Icons.calendar_today),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //close model button
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                  child: const Text(
-                    'Close',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                //save button
-                ElevatedButton(
-                  onPressed: _hadleGoalFormSubmit,
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.green)),
-                  child:
-                      const Text('Save', style: TextStyle(color: Colors.white)),
-                )
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
