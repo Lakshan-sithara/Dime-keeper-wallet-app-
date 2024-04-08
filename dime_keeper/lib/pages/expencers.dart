@@ -8,7 +8,7 @@ import 'package:expence_master/widgets/AppBarTitleWithDateTime.dart';
 import 'package:expence_master/widgets/add_new_expence.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:hive/hive.dart';
-import 'package:fl_chart/fl_chart.dart'; // Import fl_chart package for DonutPieChart
+import 'package:syncfusion_flutter_charts/charts.dart'; // Import Syncfusion Flutter Charts
 
 class Expencers extends StatefulWidget {
   const Expencers({Key? key}) : super(key: key);
@@ -119,128 +119,161 @@ class _ExpencersState extends State<Expencers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SliderDrawer(
-      appBar: SliderAppBar(
-        appBarColor: Color(0xFFC9EDF7),
-        title: Text(
-          "Dashboard",
-          style: TextBlackStyleTopNavHeading(),
+      body: SliderDrawer(
+        appBar: SliderAppBar(
+          appBarColor: Color(0xFFC9EDF7),
+          title: Text(
+            "Dashboard",
+            style: TextBlackStyleTopNavHeading(),
+          ),
         ),
-      ),
-      slider: Menu(),
-      child: Container(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              // Wrap the Column with SingleChildScrollView
-              child: Container(
-                color: const Color(0xFFDFF8FF),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Expense Structure',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              const Text(
-                                'THIS MONTH',
-                              ),
-                              Text(
-                                'LKR $totalExpense',
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                              Center(
-                                child: SizedBox(
-                                  width:
-                                      250, // Adjust the width of the SizedBox
-                                  height:
-                                      250, // Adjust the height of the SizedBox
-                                  child: PieChart(
-                                    PieChartData(
-                                      sections: dataMap.entries.map((entry) {
-                                        return PieChartSectionData(
-                                          color: _getColor(entry.key),
-                                          value: entry.value,
-                                          title: entry.key,
-                                          radius: 100,
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
+        slider: Menu(),
+        child: Container(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  color: const Color(0xFFDFF8FF),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Expense Structure',
+                                  style: TextStyle(fontSize: 20),
                                 ),
-                              ),
-                            ],
+                                const Text(
+                                  'THIS MONTH',
+                                ),
+                                Text(
+                                  'LKR $totalExpense',
+                                  style: const TextStyle(fontSize: 30),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Center(
+                                      child: SizedBox(
+                                        width: 250,
+                                        height: 250,
+                                        child: SfCircularChart(
+                                          series: <CircularSeries>[
+                                            DoughnutSeries<Map<String, double>,
+                                                String>(
+                                              dataSource: dataMap.entries
+                                                  .toList()
+                                                  .map((entry) =>
+                                                      {entry.key: entry.value})
+                                                  .toList(),
+                                              xValueMapper:
+                                                  (Map<String, double> data,
+                                                          _) =>
+                                                      data.keys.first,
+                                              yValueMapper:
+                                                  (Map<String, double> data,
+                                                          _) =>
+                                                      data.values.first,
+                                              dataLabelMapper: (Map<String,
+                                                              double>
+                                                          data,
+                                                      _) =>
+                                                  '${data.keys.first}: ${data.values.first}',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: dataMap.entries
+                                          .map(
+                                            (entry) => Column(
+                                              children: [
+                                                Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: _getColor(entry.key),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(entry.key),
+                                              ],
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
+                        const SizedBox(height: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                          ),
+                          child: OverViweCard(
+                              dataMap:
+                                  dataMap), // Use OverViweCard with dataMap
                         ),
-                        child: OverViweCard(
-                            dataMap: dataMap), // Use OverViweCard with dataMap
-                      ),
-                      // ExpenceList(
-                      //   expenceList: db.expenceList,
-                      //   onDeleteExpence: onDeleteExpence,
-                      // ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            //###### Add Button ######
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: FloatingActionButton(
-                  onPressed: _openAddExpensesOverlay,
-                  backgroundColor: Colors.blue,
-                  elevation: 5,
-                  child: const Icon(
-                    Icons.add,
-                    size: 32,
+              Positioned(
+                bottom: 16,
+                right: 16,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: FloatingActionButton(
+                    onPressed: _openAddExpensesOverlay,
+                    backgroundColor: Colors.blue,
+                    elevation: 5,
+                    child: const Icon(
+                      Icons.add,
+                      size: 32,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Color _getColor(String category) {
-    // Add logic to return colors based on categories
-    // For example, you can return different colors for Food, Travel, Leisure, Work, etc.
-    // You can use switch statements or if-else conditions to define colors based on categories.
     switch (category) {
       case 'Food':
-        return Colors.red;
+        return const Color(0xFF4D79C5); // Use the color from the donut chart
       case 'Travel':
-        return Colors.blue;
+        return const Color.fromARGB(
+            255, 197, 77, 77); // Use the color from the donut chart
       case 'Leisure':
-        return Colors.green;
+        return const Color.fromARGB(
+            255, 237, 113, 60); // Use the color from the donut chart
       case 'Work':
-        return Colors.orange;
+        return const Color.fromARGB(
+            255, 250, 176, 152); // Use the color from the donut chart
       default:
-        return Colors.grey;
+        return Colors.grey; // Use a default color if category not found
     }
   }
 }
