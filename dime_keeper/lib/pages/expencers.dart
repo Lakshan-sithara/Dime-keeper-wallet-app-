@@ -108,7 +108,6 @@ class _ExpencersState extends State<Expencers> {
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
-          
           body: AddNewExpence(
             onAddExpence: onAddNewExpence,
           ),
