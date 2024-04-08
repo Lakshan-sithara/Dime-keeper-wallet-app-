@@ -60,24 +60,23 @@ class _GoalsPageState extends State<GoalsPage> {
 
   //function to open goal model overlay
   void _openaddGoalsOverlay() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AddNewGoals(
-          addNewGoal: AddNewGoal,
-        );
-      },
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            body: AddNewGoals(addNewGoal: AddNewGoal),
+          ),
+        ));
   }
 
   //function to open paln model overlay
   void _openPlanOverlay() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => AddPlan(
-        onAddPlan: onAddPlan,
-      ),
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Scaffold(
+                  body: AddPlan(onAddPlan: onAddPlan),
+                )));
   }
 
   //update Add Goal values

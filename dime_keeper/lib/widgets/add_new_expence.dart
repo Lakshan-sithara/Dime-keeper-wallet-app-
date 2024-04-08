@@ -123,40 +123,56 @@ class _AddNewExpenceState extends State<AddNewExpence> {
         backgroundColor: const Color(0xFFC9EDF7),
         actions: [
           IconButton(
-              onPressed: _handleFormSubmit, icon: const Icon(Icons.check))
+            onPressed: _handleFormSubmit,
+            icon: const Icon(Icons.check),
+          ),
         ],
       ),
       body: Container(
-        color: Color(0xFFDFF8FF), // Set the background color here
+        color: const Color(0xFFDFF8FF),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Text('Title'),
                 TextField(
                   controller: _titleController,
                   decoration: const InputDecoration(
                     hintText: 'Add new expense title',
-                    labelText: 'Title',
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
                   keyboardType: TextInputType.text,
                   maxLength: 50,
                 ),
                 const SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _amountController,
-                        decoration: const InputDecoration(
-                          hintText: 'Amount',
-                          labelText: 'Enter amount here',
-                        ),
-                        keyboardType: TextInputType.number,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Amount'),
+                          TextField(
+                            controller: _amountController,
+                            decoration: const InputDecoration(
+                              hintText: 'Amount',
+                              //labelText: 'Enter amount here',
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
+                    const SizedBox(width: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -175,20 +191,30 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                   children: [
                     const Text('Select a category: '),
                     const SizedBox(width: 10),
-                    DropdownButton(
-                      value: _selectedCategary,
-                      items: Chatagary.values
-                          .map((categary) => DropdownMenuItem(
-                                value: categary,
-                                child: Text(categary.name),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedCategary = value!;
-                        });
-                      },
-                    )
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(
+                          value: _selectedCategary,
+                          items: Chatagary.values
+                              .map((categary) => DropdownMenuItem(
+                                    value: categary,
+                                    child: Text(categary.name),
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategary = value!;
+                            });
+                          },
+                          dropdownColor: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

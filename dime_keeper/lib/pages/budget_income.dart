@@ -31,20 +31,20 @@ class _IncomeState extends State<Income> {
 
   //function to open budget model overlay
   void _openaddBudgetOverlay() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AddNewBudget(
-          onAddBudget: addNewBudget,
-        ); // Corrected the placement of the closing parenthesis here
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: AddNewBudget(onAddBudget: addNewBudget),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 163, 237, 249),
+      backgroundColor: const Color(0xFFDFF8FF),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
